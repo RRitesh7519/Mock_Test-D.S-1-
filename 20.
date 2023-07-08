@@ -1,0 +1,37 @@
+import math
+
+def calculate_mean(sample):
+    total = sum(sample)
+    count = len(sample)
+    mean = total / count
+    return mean
+
+def calculate_variance(sample):
+    mean = calculate_mean(sample)
+    squared_diff = [(x - mean) ** 2 for x in sample]
+    variance = sum(squared_diff) / (len(sample) - 1)
+    return variance
+
+def calculate_t_statistic(sample1, sample2):
+    mean1 = calculate_mean(sample1)
+    mean2 = calculate_mean(sample2)
+    variance1 = calculate_variance(sample1)
+    variance2 = calculate_variance(sample2)
+    n1 = len(sample1)
+    n2 = len(sample2)
+    pooled_variance = ((n1 - 1) * variance1 + (n2 - 1) * variance2) / (n1 + n2 - 2)
+    standard_error = math.sqrt(pooled_variance * (1/n1 + 1/n2))
+    t_statistic = (mean1 - mean2) / standard_error
+    return t_statistic
+
+def perform_hypothesis_test(sample1, sample2):
+    t_statistic = calculate_t_statistic(sample1, sample2)
+    degrees_of_freedom = len(sample1) + len(sample2) - 2
+    critical_value = 1.96  # Assuming a significance level of 0.05 (two-tailed test)
+    p_value = 2 * (1 - stats.t.cdf(abs(t_statistic), degrees_of_freedom))
+    return p_value
+
+sample1 = [5, 10, 15, 20, 25]
+sample2 = [10, 20, 30, 40, 50]
+p_value = perform_hypothesis_test(sample1, sample2)
+print("P-value:", p_value)
